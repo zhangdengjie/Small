@@ -15,10 +15,11 @@
  */
 package net.wequick.gradle
 
+import org.gradle.StartParameter
 import org.gradle.api.Project
 import org.gradle.util.VersionNumber
 
-public class RootExtension extends BaseExtension {
+class RootExtension extends BaseExtension {
 
     private static final String FD_BUILD_SMALL = 'build-small'
     private static final String FD_PRE_JAR = 'small-pre-jar'
@@ -150,25 +151,25 @@ public class RootExtension extends BaseExtension {
         preLinkAarDir = new File(preLinkDir, FD_AAR)
 
         // Parse gradle task
-        def sp = project.gradle.startParameter
+        StartParameter sp = project.gradle.startParameter
         def t = sp.taskNames[0]
         if (t != null) {
             def p = sp.projectDir
-            def pn = null
+            def projectName = null
             if (p == null) {
                 if (t.startsWith(':')) {
                     // gradlew :app.main:assembleRelease
                     def tArr = t.split(':')
                     if (tArr.length == 3) { // ['', 'app.main', 'assembleRelease']
-                        pn = tArr[1]
+                        projectName = tArr[1]
                         t = tArr[2]
                     }
                 }
             } else if (p != project.rootProject.projectDir) {
                 // gradlew -p [project.name] assembleRelease
-                pn = p.name
+                projectName = p.name
             }
-            mP = pn
+            mP = projectName
             mT = t
         }
     }
@@ -307,25 +308,25 @@ public class RootExtension extends BaseExtension {
     }
 
     protected boolean isLibProject(Project project) {
-        boolean found = false;
+        boolean found = false
         if (libProjects != null) {
-            found = libProjects.contains(project);
+            found = libProjects.contains(project)
         }
         if (!found && hostStubProjects != null) {
-            found = hostStubProjects.contains(project);
+            found = hostStubProjects.contains(project)
         }
-        return found;
+        return found
     }
 
     protected boolean isLibProject(String name) {
-        boolean found = false;
+        boolean found = false
         if (libProjects != null) {
-            found = libProjects.find{ it.name == name } != null;
+            found = libProjects.find{ it.name == name } != null
         }
         if (!found && hostStubProjects != null) {
-            found = hostStubProjects.find{ it.name == name } != null;
+            found = hostStubProjects.find{ it.name == name } != null
         }
-        return found;
+        return found
     }
 
     public def android(Closure closure) {

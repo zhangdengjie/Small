@@ -17,7 +17,7 @@ package net.wequick.gradle
 
 import org.gradle.api.Project
 
-public class BaseExtension {
+class BaseExtension {
 
     public static final String FD_INTERMEDIATES = "intermediates"
 

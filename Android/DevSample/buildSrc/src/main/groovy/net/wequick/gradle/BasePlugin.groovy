@@ -15,13 +15,14 @@
  */
 package net.wequick.gradle
 
+import org.gradle.BuildResult
 import org.gradle.api.Project
 import org.gradle.api.Plugin
 
 /**
- *
+ * 插件基类
  */
-public abstract class BasePlugin implements Plugin<Project> {
+abstract class BasePlugin implements Plugin<Project> {
 
     public static final String SMALL_AAR_PREFIX = "net.wequick.small:small:"
     public static final String SMALL_BINDING_AAR_PREFIX = "small.support:databinding:"
@@ -63,7 +64,7 @@ public abstract class BasePlugin implements Plugin<Project> {
 
     protected void configureProject() {
         // Tidy up while gradle build finished
-        project.gradle.buildFinished { result ->
+        project.gradle.buildFinished { BuildResult result ->
             if (result.failure == null) return
             tidyUp()
         }

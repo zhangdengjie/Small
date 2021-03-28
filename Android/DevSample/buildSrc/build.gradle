@@ -9,8 +9,8 @@ repositories {
 }
 
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
+    implementation gradleApi()
+    implementation localGroovy()
 }
 
 apply from: 'provided.gradle'
@@ -57,4 +57,11 @@ task('changes').doLast {
         args 'log', '--pretty=format:%cd #%h @%cn %s', '--date=short', "--since=$date", project.projectDir
     }
     // println log.execute().text
+}
+
+uploadArchives {
+    doLast {
+        println "编译后删除build文件夹"
+        delete project.buildDir
+    }
 }
