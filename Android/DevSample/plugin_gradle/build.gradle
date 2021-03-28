@@ -1,0 +1,31 @@
+//--------------------------------------------------------------------------------------------------
+// Scripts to install plugin to local repository [~/.m2/repository]
+// > ./gradlew install
+//--------------------------------------------------------------------------------------------------
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+dependencies {
+    implementation 'com.android.tools.build:gradle:2.3.0'
+    implementation gradleApi()
+    implementation localGroovy()
+}
+
+group = 'com.zdj.sdk'
+version = '1.0.1'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../plugin_component'))
+        }
+    }
+}
+
+
+uploadArchives {
+    doLast {
+        println "编译后删除build文件夹"
+        delete project.buildDir
+    }
+}

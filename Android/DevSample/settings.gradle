@@ -1,3 +1,4 @@
+include ':plugin_gradle'
 include ':small', ':small-databinding'
 
 def externalModules = [
