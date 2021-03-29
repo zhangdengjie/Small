@@ -19,7 +19,7 @@ import com.android.build.gradle.tasks.ProcessAndroidResources
 import org.gradle.api.Project
 import org.gradle.api.Task
 
-public class AndroidExtension extends BaseExtension {
+class AndroidExtension extends BaseExtension {
 
     /** File of release variant output */
     protected File outputFile

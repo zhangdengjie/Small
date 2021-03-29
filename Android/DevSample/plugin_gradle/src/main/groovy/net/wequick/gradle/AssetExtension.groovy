@@ -17,7 +17,7 @@ package net.wequick.gradle
 
 import org.gradle.api.Project
 
-public class AssetExtension extends BundleExtension {
+class AssetExtension extends BundleExtension {
 
     /** */
     protected File assetsDir

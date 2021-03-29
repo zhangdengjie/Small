@@ -9,6 +9,7 @@ import net.wequick.gradle.util.Log
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
+import org.gradle.api.file.CopySpec
 import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.TaskState
 
@@ -38,7 +39,7 @@ class RootPlugin extends BasePlugin {
 
         injectBuildLog()
 
-        def rootExt = small
+        RootExtension rootExt = small
 
         rootExt.appProjects = new HashSet<>()
         rootExt.libProjects = new HashSet<>()
@@ -57,7 +58,7 @@ class RootPlugin extends BasePlugin {
             // Configure versions
             def base = rootExt.android
             if (base != null) {
-                project.subprojects { p ->
+                project.subprojects {Project p ->
                     p.afterEvaluate {
                         configVersions(p, base)
                     }
@@ -169,6 +170,7 @@ class RootPlugin extends BasePlugin {
     protected void configVersions(Project p, RootExtension.AndroidConfig base) {
         if (!p.hasProperty('android')) return
 
+        // p.android = p.getExtensions().getByName("android")
         com.android.build.gradle.BaseExtension android = p.android
         if (base.compileSdkVersion != 0) {
             android.compileSdkVersion = base.compileSdkVersion
@@ -477,6 +479,7 @@ class RootPlugin extends BasePlugin {
         }
         //  - copy dependencies jars
         ext.buildCaches.each { k, v ->
+            // 闭包中的return 结束当此循环,类似于continue
             // explodedDir: [key:value]
             // [com.android.support/appcompat-v7/25.2.0:\Users\admin\.android\build-cache\hash\output]
             File jarDir = new File(v, 'jars')
@@ -504,10 +507,10 @@ class RootPlugin extends BasePlugin {
                 destFile = new File(preJarDir, "${group}-${artifact}-${jar.name}")
                 if (destFile.exists()) return
 
-                project.copy {
-                    from jar
-                    into preJarDir
-                    rename {destFile.name}
+                project.copy { CopySpec spec ->
+                    spec.from jar
+                    spec.into preJarDir
+                    spec.rename {destFile.name}
                 }
             }
         }
@@ -518,10 +521,10 @@ class RootPlugin extends BasePlugin {
         if (!preApDir.exists()) preApDir.mkdir()
         def apFile = aapt.packageOutputFile
         def preApName = "$libName-resources.ap_"
-        project.copy {
-            from apFile
-            into preApDir
-            rename {preApName}
+        project.copy { CopySpec spec ->
+            spec.from apFile
+            spec.into preApDir
+            spec.rename {preApName}
         }
         // Copy R.txt
         def preIdsDir = small.preIdsDir
@@ -627,6 +630,9 @@ class RootPlugin extends BasePlugin {
         }
     }
 
+    /**
+     * 兼容 厂商
+     */
     private void compatVendors() {
         // Check if has kotlin
         project.afterEvaluate {

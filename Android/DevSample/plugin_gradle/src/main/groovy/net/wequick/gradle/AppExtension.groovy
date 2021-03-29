@@ -19,7 +19,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.tasks.compile.JavaCompile
 
-public class AppExtension extends BundleExtension {
+class AppExtension extends BundleExtension {
 
     /** Task of java compiler */
     JavaCompile javac

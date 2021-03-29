@@ -15,7 +15,7 @@
  */
 package net.wequick.gradle
 
-public enum PluginType {
+enum PluginType {
     Unknown (0),
     Host    (1),
     App     (2),

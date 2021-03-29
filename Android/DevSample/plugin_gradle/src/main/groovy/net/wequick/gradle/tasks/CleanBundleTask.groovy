@@ -18,6 +18,9 @@ package net.wequick.gradle.tasks
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
+/**
+ * 自定义Task 继承 DefaultTask
+ */
 class CleanBundleTask extends DefaultTask {
 
     @TaskAction
